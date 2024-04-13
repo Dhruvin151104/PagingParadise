@@ -17,10 +17,10 @@ function Navbar() {
   };
   return (
     <div className=" h-24 w-full flex">
-      <Link to="/" className="h-full w-[30%]">
+      <Link to="/" className="h-full w-[50%]">
         <Logo />
       </Link>
-      <div className="h-full w-[70%]  flex justify-center items-center gap-20">
+      <div className="h-full w-[50%]  flex justify-center items-center gap-20">
         {element({ text: "Learn", link: "/learn" })}
         {element({ text: "Practice", link: "/" })}
         {element({ text: "Visualize", link: "/" })}

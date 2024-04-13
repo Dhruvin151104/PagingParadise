@@ -17,9 +17,9 @@ function Navbar() {
   };
   return (
     <div className=" h-24 w-full flex">
-      <div className="h-full w-[30%]">
+      <Link to="/" className="h-full w-[30%]">
         <Logo />
-      </div>
+      </Link>
       <div className="h-full w-[70%]  flex justify-center items-center gap-20">
         {element({ text: "Learn", link: "/learn" })}
         {element({ text: "Practice", link: "/" })}

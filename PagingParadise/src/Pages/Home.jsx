@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div className="h-[80vh] w-full  flex mt-5">
+    <div className="h-[80vh] w-full flex mt-5">
       <div className="w-1/2 h-full  flex flex-col justify-center gap-7 pr-20">
         <p className="text-3xl font-medium">
           <span className="text-emerald-500">Page</span> Replacement Algorithm

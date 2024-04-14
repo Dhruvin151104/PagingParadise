@@ -10,7 +10,7 @@ function Alert(props) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => props.setshow(false)}
-          className="bg-black/30 backdrop-blur p-8 z-50 cursor-pointer font-[Poppins] h-[100vh] w-[100vw] flex justify-center items-center absolute top-0"
+          className="bg-black/30 backdrop-blur p-8 z-50 cursor-pointer font-[Poppins] h-[100vh] w-[100vw] flex justify-center items-center fixed top-0"
         >
           <motion.div
             initial={{ scale: 0, rotate: "12.5deg" }}

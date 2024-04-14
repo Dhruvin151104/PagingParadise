@@ -6,13 +6,14 @@ import ChooseAlgorithm from "../components/ChooseAlgorithm";
 function Visualize() {
   const [showAlert, setshowAlert] = useState(false);
   const [showPageSeq, setshowPageSeq] = useState(false);
+  const [showFinalSequence, setshowFinalSequence] = useState(false);
   const [pageNo, setpageNo] = useState("");
   const [index, setindex] = useState(0);
   const [frameSize, setframeSize] = useState("");
   const message = useRef(null);
   const seqValues = useRef({});
   const focusRefSeq = useRef({});
-  const [chooseAlgo, setchooseAlgo] = useState(0)
+  const [chooseAlgo, setchooseAlgo] = useState(0);
 
   const validInput = (e) => {
     if (e.target.value === "") return e.target.value;
@@ -24,9 +25,8 @@ function Visualize() {
   };
 
   const handleKeyDown = (e) => {
-    console.log(e.key);
-    if(e.key==='Tab'){
-        e.preventDefault()
+    if (e.key === "Tab") {
+      e.preventDefault();
     }
     if (e.key === "Enter") {
       setindex(() => index + 1);
@@ -34,12 +34,11 @@ function Visualize() {
   };
 
   useEffect(() => {
-    console.log(focusRefSeq.current[index]);
     focusRefSeq.current[index] && focusRefSeq.current[index].focus();
   }, [index]);
 
   return (
-    <div className="h-[100vh] w-full  mt-16 flex flex-col items-center gap-10 mb-10">
+    <div className="min-h-[130vh] w-full  mt-16 flex flex-col items-center gap-20">
       <Alert
         show={showAlert}
         setshow={setshowAlert}
@@ -47,10 +46,15 @@ function Visualize() {
         message={message.current}
       />
 
+      {/* Choosing Algorithm */}
+      <div className="w-[90%] h-[60vh]">
+        <ChooseAlgorithm index={chooseAlgo} setindex={setchooseAlgo} />
+      </div>
+
       {/* Selection Part */}
-      <div className="w-[90%] h-[50%] shadow-inner rounded-xl overflow-hidden flex flex-col items-center relative">
+      <div className="w-[90%] h-[60vh] max-h-max shadow-inner rounded-xl overflow-hidden flex flex-col items-center">
         {/* Taking Size of Parameters */}
-        <div className="w-full h-[25%] bg-red-300 flex text-[1.5vw] justify-evenly relative z-10">
+        <div className="w-full h-[20%] bg-red-300 flex text-[1.5vw] justify-evenly">
           <div className="h-full  flex justify-center items-center gap-5">
             <p className="font-normal">Enter the frame size</p>
             <input
@@ -58,7 +62,10 @@ function Visualize() {
               placeholder="Eg. 3"
               min="1"
               value={frameSize}
-              onChange={(e) => setframeSize(validInput(e))}
+              onChange={(e) => {
+                setshowFinalSequence(() => false);
+                setframeSize(validInput(e));
+              }}
               className="rounded-lg w-[30%] h-[55%] pl-5 remove-arrow font-light focus:outline-emerald-500 bg-gray-100 shadow-inner"
             />
           </div>
@@ -70,6 +77,7 @@ function Visualize() {
               min="1"
               value={pageNo}
               onChange={(e) => {
+                setshowFinalSequence(() => false);
                 setshowPageSeq(() => false);
                 setpageNo(validInput(e));
               }}
@@ -79,14 +87,16 @@ function Visualize() {
         </div>
 
         {/* Pages Sequence Input */}
-        <div className="w-full h-[75%] flex justify-center items-center relative">
-          <AnimatePresence>
+        <div className="w-full h-[80%] flex justify-center items-center overflow-hidden">
+          <AnimatePresence mode="wait">
+            {/* Start Button */}
             {!showPageSeq && (
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0.3, 0.5, 0.8, 1] }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="h-full w-full bg-gray-200/90 flex justify-center items-center absolute transition-opacity duration-1000 ease-linear"
+                transition={{ duration: 0.7, ease: "linear" }}
+                className="h-full w-full bg-gray-200/90 flex justify-center items-center"
               >
                 <button
                   disabled={pageNo === ""}
@@ -100,7 +110,11 @@ function Visualize() {
                     if (pageNo > 30) {
                       message.current = "Maximum number of pages allowed is 30";
                       setshowAlert(true);
-                    } else setshowPageSeq(true);
+                    } else {
+                      seqValues.current = {}
+                      focusRefSeq.current = {};
+                      setshowPageSeq(true);
+                    }
                   }}
                 >
                   Enter Page Sequence
@@ -108,56 +122,136 @@ function Visualize() {
               </motion.div>
             )}
 
+            {/* Taking sequence input */}
             {showPageSeq && (
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0.3, 0.5, 0.8, 1] }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="w-full h-full bg-white flex items-center absolute duration-1000 ease-linear px-5 "
+                transition={{ duration: 0.7, ease: "linear" }}
+                className="w-full h-full bg-white"
               >
-                <div className="h-[50%] min-w-[15%] w-[15%] text-lg font-medium flex flex-col gap-3">
-                  <div className="h-1/2 w-full flex justify-center items-center border-b-emerald-400 border-b-2">
-                    Page No.
-                  </div>
-                  <div className="h-1/2 w-full flex justify-center items-center">
-                    Sequence
+                {/* Single Input */}
+                <div className="w-full h-[65%] flex items-center px-5">
+                  <div
+                    className={`h-[60%] w-full flex overflow-auto items-center ${
+                      pageNo >= 9 ? "justify-start" : " justify-center"
+                    }`}
+                  >
+                    <div className="h-full min-w-[15%] w-[15%] text-[1.4vw] font-medium flex flex-col gap-3">
+                      <div className="h-1/2 w-full flex justify-center items-center border-b-emerald-400 border-b-2">
+                        Page No.
+                      </div>
+                      <div className="h-1/2 w-full flex justify-center items-center">
+                        Sequence
+                      </div>
+                    </div>
+                    {/* Mapping Part */}
+                    {[...Array(pageNo)].map((_, ind) => {
+                      return (
+                        <div
+                          key={ind}
+                          className="h-full min-w-[10%] w-[10%] flex flex-col gap-3"
+                        >
+                          <div
+                            className={`h-1/2 w-full flex justify-center items-center font-medium text-[1.4vw] duration-300 ease-linear border-b-emerald-400 border-b-2 ${
+                              index === ind + 1
+                                ? "text-black "
+                                : "text-neutral-400"
+                            } `}
+                          >
+                            P{ind + 1}
+                          </div>
+                          <div className="h-1/2 w-full flex justify-center items-center">
+                            <input
+                              type="number"
+                              min="1"
+                              ref={(el) => (focusRefSeq.current[ind + 1] = el)}
+                              onClick={() => setindex(ind + 1)}
+                              onChange={(e) => {
+                                setshowFinalSequence(() => false);
+                                e.target.value = validInput(e);
+                                seqValues.current[ind + 1] = e.target.value;
+                              }}
+                              onKeyDown={handleKeyDown}
+                              className={`h-[95%] w-[65%] rounded-lg remove-arrow text-[1.4vw] font-medium bg-gray-200 shadow-inner text-center duration-300 ease-linear ${
+                                index === ind + 1
+                                  ? "focus:outline-emerald-500"
+                                  : " focus:outline-none"
+                              }`}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-                <div className="h-[50%] w-[85%] flex overflow-auto">
-                  {[...Array(pageNo)].map((_, ind) => {
-                    return (
-                      <div
-                        key={ind}
-                        className="h-full min-w-[12%] w-[12%] flex flex-col gap-3"
-                      >
-                        <div
-                          className={`h-1/2 w-full flex justify-center items-center font-medium text-xl duration-300 ease-linear border-b-emerald-400 border-b-2 ${
-                            index === ind+1 ? "text-black " : "text-neutral-400"
-                          } `}
-                        >
-                          P{ind + 1}
+
+                {/* Submit Input */}
+                <div className="w-full h-[35%] flex justify-center items-start">
+                  {!showFinalSequence && (
+                    <button
+                      onClick={() => {
+                        if (frameSize === "") {
+                          message.current = "Please enter frame size";
+                          setshowAlert(true);
+                        } else {
+                          for (let j = 1; j <= pageNo; j++) {
+                            if (!focusRefSeq.current[j].value) {
+                              message.current = `Enter the value for Page No. ${j}`;
+                              setshowAlert(true);
+                              return;
+                            }
+                          }
+                          setshowFinalSequence(true);
+                        }
+                      }}
+                      className="w-max font-medium  px-7 py-3 bg-emerald-400 rounded-lg text-[1.5vw] duration-300 ease-linear text-black hover:bg-emerald-300"
+                    >
+                      Confirm Sequence
+                    </button>
+                  )}
+
+                  {showFinalSequence && (
+                    <div className="w-full h-full flex justify-evenly items-center text-[1.6vw] px-5 flex-col border-t-red-300 border-t-[3px]">
+                      <div className="h-1/2 w-full  flex justify-center gap-5 font-medium">
+                        <div className="h-full w-1/2 flex justify-center items-center">
+                          Frame Size : {frameSize}
                         </div>
-                        <div className="h-1/2 w-full flex justify-center items-center">
-                          <input
-                            type="number"
-                            min="1"
-                            ref={(el) => (focusRefSeq.current[ind+1] = el)}
-                            onClick={() => setindex(ind+1)}
-                            onChange={(e) => {
-                                e.target.value = validInput(e)
-                                seqValues.current[ind+1]=e.target.value
-                            }}
-                            onKeyDown={handleKeyDown}
-                            className={`h-[95%] w-[65%] rounded-lg remove-arrow text-lg font-medium bg-gray-200 shadow-inner text-center duration-300 ease-linear ${
-                              index === ind+1
-                                ? "focus:outline-emerald-500"
-                                : " focus:outline-none"
-                            }`}
-                          />
+                        <div className="h-full w-1/2 flex items-center justify-center gap-5">
+                          <div className="text-right">Sequence:</div>
+                          <div className="flex overflow-auto">
+                            {Object.values(focusRefSeq.current).map(
+                              (element, ind) => {
+                                return (
+                                  <p className="h-full">
+                                    {element.value +
+                                      (ind + 1 !== pageNo ? ", " : ".")}
+                                  </p>
+                                );
+                              }
+                            )}
+                          </div>
                         </div>
                       </div>
-                    );
-                  })}
+
+                      {/* Generating answer button */}
+                      <div className="h-1/2 w-full flex justify-center items-start">
+                        <button className="w-max font-medium px-5 py-2 bg-emerald-400 rounded-lg text-[1.4vw] duration-300 ease-linear text-black hover:bg-emerald-300" onClick={()=>{
+                          if(chooseAlgo===0){
+                            message.current="Choose some algorithm"
+                            setshowAlert(()=>true)
+                          }
+                          else{
+                            seqValues.current[0]=frameSize.toString()
+                            console.log(Object.values(seqValues))
+                          }
+                        }}>
+                          Generate Answer
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -165,9 +259,9 @@ function Visualize() {
         </div>
       </div>
 
-      {/* Choosing Algorithm */}
-      <div className="w-[90%] h-[50%]">
-        <ChooseAlgorithm index={chooseAlgo} setindex={setchooseAlgo}/>
+      {/* Generating Answer */}
+      <div className="h-[80vh] w-[90%] bg-red-600 rounded-xl mb-10 flex justify-center items-center">
+
       </div>
     </div>
   );

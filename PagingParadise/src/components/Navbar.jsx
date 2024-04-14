@@ -23,7 +23,7 @@ function Navbar() {
       <div className="h-full w-[50%]  flex justify-center items-center gap-20">
         {element({ text: "Learn", link: "/learn" })}
         {element({ text: "Practice", link: "/" })}
-        {element({ text: "Visualize", link: "/" })}
+        {element({ text: "Visualize", link: "/visualize" })}
       </div>
     </div>
   );

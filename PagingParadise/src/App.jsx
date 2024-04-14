@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./Pages/Home";
 import Learn from "./Pages/Learn";
+import Visualize from "./Pages/Visualize";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/learn" element={<Learn />}/>
+        <Route path="/visualize" element={<Visualize />}/>
       </Routes>
     </div>
   )

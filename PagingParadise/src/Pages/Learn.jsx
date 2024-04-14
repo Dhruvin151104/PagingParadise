@@ -1,6 +1,9 @@
-import React from "react";
+import React,{useState} from "react";
+import ChooseAlgorithm from "../components/ChooseAlgorithm";
 
 function Learn() {
+  const [chooseAlgo, setchooseAlgo] = useState(0)
+
   const line = (text) => {
     return (
       <div className="flex gap-5">
@@ -16,13 +19,20 @@ function Learn() {
         Different Page Replacement Algorithms
       </div>
 
-      <div className="w-full h-[200vh] mt-16 flex flex-col items-center justify-center gap-3">
-        <div className="h-[33%] w-full  flex flex-col items-center gap-8">
+      <div className="w-full mt-16 flex flex-col items-center gap-20 mb-10">
+
+        {/* Choosing Algorithm */}
+        <div className="h-[50vh] w-[90%]">
+          <ChooseAlgorithm index={chooseAlgo} setindex={setchooseAlgo}/>
+        </div>
+
+        {/* FIFO */}
+        {chooseAlgo===1 && <div className="min-h-[50vh] w-full  flex flex-col items-center gap-8">
           <p className="text-3xl font-light  w-full text-center border-b-[3px] border-emerald-300 py-2">
             First In First Out(FIFO)
           </p>
 
-          <div className="text-xl h-[70%] font-light w-full flex flex-col justify-center gap-8 px-20">
+          <div className="text-xl min-h-[80%] font-light w-full flex flex-col gap-8 px-20">
             {line(
               "The first in first out page replacement algorithm is the simplest page replacement algorithm."
             )}
@@ -39,14 +49,15 @@ function Learn() {
               "Hence removing the oldest page may create page fault again."
             )}
           </div>
-        </div>
+        </div>}
 
-        <div className="h-[33%] w-full flex flex-col items-center justify-center gap-8">
+        {/* Optimal Replacement */}
+        {chooseAlgo===2 && <div className="min-h-[50vh] w-full flex flex-col items-center justify-center gap-8">
           <p className="text-3xl font-light  w-full text-center border-b-[3px] border-emerald-300 py-2">
             Optimal Page Replacement Algorithm
           </p>
 
-          <div className="text-xl h-[90%] font-light w-full flex flex-col justify-center gap-8 px-20">
+          <div className="text-xl min-h-[80%] font-light w-full flex flex-col gap-8 px-20">
             {line(
               "After filling up of the frames, the next page in the waiting queue tries to enter the frame. If the frame is present then, no problem is occurred. Because of the page which is to be searched is already present in the allocated frames."
             )}
@@ -66,14 +77,15 @@ function Learn() {
               "At the time of the page fault, the operating system has no way of knowing when each of the pages will be referenced next."
             )}
           </div>
-        </div>
+        </div>}
 
-        <div className="h-[33%] w-full flex flex-col justify-center items-center gap-8">
+        {/* LRU */}
+        {chooseAlgo===3 && <div className="min-h-[50vh] w-full flex flex-col justify-center items-center gap-8">
           <p className="text-3xl font-light  w-full text-center border-b-[3px] border-emerald-300 py-2">
             Least Recently Used(LRU)
           </p>
 
-          <div className="text-xl h-[70%] font-light w-full flex flex-col justify-center gap-8 px-20">
+          <div className="text-xl min-h-[80%] font-light w-full flex flex-col gap-8 px-20">
             {line(
               "A good approximation to the optimal algorithm is based on the observation that pages that have been heavily used in last few instructions will probably be heavily used again in next few instructions."
             )}
@@ -88,7 +100,7 @@ function Learn() {
               "Finding a page in the list, deleting it, and then moving it to the front is a very time consuming operations."
             )}
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );

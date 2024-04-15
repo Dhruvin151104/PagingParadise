@@ -2,9 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Alert from "../components/Alert";
 import { motion, AnimatePresence } from "framer-motion";
 import ChooseAlgorithm from "../components/ChooseAlgorithm";
-import FIFOsolver from "../components/FIFOsolver";
-import OptimalPage from "../components/OptimalPage";
-import LRUPage from "../components/LRUPage";
+import AnswerPage from "../components/AnswerPage";
 
 function Visualize() {
   const [showAlert, setshowAlert] = useState(false);
@@ -280,21 +278,7 @@ function Visualize() {
             {chooseAlgo === 2 ? "Optimal Page Replacement" : ""}
             {chooseAlgo === 3 ? "Least Recently Used (LRU)" : ""}
           </div>
-          {chooseAlgo === 1 ? (
-            <FIFOsolver data={seqValues.current} frameSize={frameSize} />
-          ) : (
-            ""
-          )}
-          {chooseAlgo === 2 ? (
-            <OptimalPage data={seqValues.current} frameSize={frameSize} />
-          ) : (
-            ""
-          )}
-          {chooseAlgo === 3 ? (
-            <LRUPage data={seqValues.current} frameSize={frameSize} />
-          ) : (
-            ""
-          )}
+          <AnswerPage data={seqValues.current} frameSize={frameSize}/>
         </div>
       )}
     </div>

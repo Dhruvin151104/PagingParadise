@@ -1,55 +1,15 @@
 import React, { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 
-function FIFOsolver(props) {
-  const data = Object.values(props.data);
-  const frameValue = useRef({});
-  const isPageFault = useRef(false);
+function AnswerPage(props) {
   const totalPageFaults = useRef(0);
+  const data = Object.values(props.data)
   const ref = useRef(null);
   const isInView = useInView(ref);
-  var queue = [];
 
   useEffect(() => {
-    frameValue.current = {};
-    for (let j = 1; j <= props.frameSize; j++) {
-      frameValue.current[j] = null
-    }
+    
   }, []);
-
-  const checkFramePresent = (value) => {
-    for (let j = 1; j <= props.frameSize; j++) {
-      if (frameValue.current[j] && frameValue.current[j].value === value)
-        return true;
-    }
-    return false;
-  };
-
-  const isRed = (index) => {
-    return frameValue.current[index + 1] && frameValue.current[index + 1].isRed;
-  };
-
-  const turnAllWhite = () => {
-    isPageFault.current = false;
-    Object.values(frameValue.current).map((element) => {
-      element.isRed = false;
-    });
-  };
-
-  const nextSequenceGenerator = (value) => {
-    turnAllWhite();
-    if (checkFramePresent(value)) return;
-    isPageFault.current = true;
-    totalPageFaults.current = totalPageFaults.current + 1;
-    if (queue.length < props.frameSize) {
-      queue.push(queue.length + 1);
-      frameValue.current[queue.length] = { value: value, isRed: true };
-    } else {
-      const frameOut = queue.shift();
-      queue.push(frameOut);
-      frameValue.current[frameOut] = { value: value, isRed: true };
-    }
-  };
 
   const faultPercent = () => {
     const percent = ((totalPageFaults.current / data.length) * 100).toFixed(2);
@@ -57,7 +17,7 @@ function FIFOsolver(props) {
   };
 
   //   Value  indicates data
-  const content = ({ value, ind }) => {
+  const content = ({value,ind}) => {
     return (
       <div
         key={ind}
@@ -71,33 +31,31 @@ function FIFOsolver(props) {
             <motion.div
               key={index}
               className={`w-full h-[8vh] flex justify-center items-center ${
-                isRed(index) ? "text-2xl text-red-600" : "bg-white"
+                true ? "text-2xl text-red-600" : "bg-white"
               } ${
                 index == props.frameSize - 1
                   ? ""
                   : "border-b-black border-b-[1px]"
               } `}
               animate={
-                isRed(index) ? { fontSize: ["1.3vw", "1.7vw", "1.3vw"] } : {}
+                true ? { fontSize: ["1.3vw", "1.7vw", "1.3vw"] } : {}
               }
               transition={{ duration: 1, repeat: Infinity }}
             >
-              {frameValue.current[index + 1]
-                ? frameValue.current[index + 1].value
-                : "-"}
+              1
             </motion.div>
           );
         })}
         <motion.div
           animate={
-            isPageFault.current ? { fontSize: ["1.3vw", "1.7vw", "1.3vw"] } : {}
+            true ? { fontSize: ["1.3vw", "1.7vw", "1.3vw"] } : {}
           }
           transition={{ duration: 1, repeat: Infinity }}
           className={`w-full h-[8vh] flex justify-center items-center border-t-[3px] border-t-red-400 ${
-            isPageFault.current ? "text-red-600" : "text-black"
+            true ? "text-red-600" : "text-black"
           }`}
         >
-          {isPageFault.current ? "P" : "-"}
+          {true ? "P" : "-"}
         </motion.div>
       </div>
     );
@@ -117,7 +75,6 @@ function FIFOsolver(props) {
             Process
           </div>
           {[...Array(props.frameSize)].map((_, index) => {
-            console.log(index);
             return (
               <div
                 key={index}
@@ -136,9 +93,8 @@ function FIFOsolver(props) {
           </div>
         </div>
         <div className="h-full max-w-full overflow-auto flex">
-          {data.map((value, index) => {
-            nextSequenceGenerator(value);
-            return content({ value: value, ind: index });
+          {data.map((value,ind) => {
+            return content({ value: value,ind:ind});
           })}
         </div>
       </div>
@@ -157,4 +113,4 @@ function FIFOsolver(props) {
   );
 }
 
-export default FIFOsolver;
+export default AnswerPage;

@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import Alert from "../components/Alert";
 import { motion, AnimatePresence } from "framer-motion";
 import ChooseAlgorithm from "../components/ChooseAlgorithm";
+import FIFOsolver from "../components/FIFOsolver";
+import OptimalPage from "../components/OptimalPage";
+import LRUPage from "../components/LRUPage";
 
 function Visualize() {
   const [showAlert, setshowAlert] = useState(false);
@@ -10,6 +13,7 @@ function Visualize() {
   const [pageNo, setpageNo] = useState("");
   const [index, setindex] = useState(0);
   const [frameSize, setframeSize] = useState("");
+  const [showAnswer, setshowAnswer] = useState(false);
   const message = useRef(null);
   const seqValues = useRef({});
   const focusRefSeq = useRef({});
@@ -37,6 +41,10 @@ function Visualize() {
     focusRefSeq.current[index] && focusRefSeq.current[index].focus();
   }, [index]);
 
+  useEffect(() => {
+    setshowAnswer(() => false);
+  }, [chooseAlgo, showPageSeq, showFinalSequence]);
+
   return (
     <div className="min-h-[130vh] w-full  mt-16 flex flex-col items-center gap-20">
       <Alert
@@ -54,7 +62,7 @@ function Visualize() {
       {/* Selection Part */}
       <div className="w-[90%] h-[60vh] max-h-max shadow-inner rounded-xl overflow-hidden flex flex-col items-center">
         {/* Taking Size of Parameters */}
-        <div className="w-full h-[20%] bg-red-300 flex text-[1.5vw] justify-evenly">
+        <div className="w-full h-[20%] bg-gradient-to-r from-slate-300 to-slate-500 flex text-[1.5vw] justify-evenly">
           <div className="h-full  flex justify-center items-center gap-5">
             <p className="font-normal">Enter the frame size</p>
             <input
@@ -87,15 +95,15 @@ function Visualize() {
         </div>
 
         {/* Pages Sequence Input */}
-        <div className="w-full h-[80%] flex justify-center items-center overflow-hidden">
-          <AnimatePresence mode="wait">
+        <AnimatePresence>
+          <motion.div className="w-full h-[80%] flex justify-center items-center overflow-hidden">
             {/* Start Button */}
             {!showPageSeq && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, ease: "linear" }}
+                exit={{ opacity: 0 }}
                 className="h-full w-full bg-gray-200/90 flex justify-center items-center"
               >
                 <button
@@ -111,7 +119,7 @@ function Visualize() {
                       message.current = "Maximum number of pages allowed is 30";
                       setshowAlert(true);
                     } else {
-                      seqValues.current = {}
+                      seqValues.current = {};
                       focusRefSeq.current = {};
                       setshowPageSeq(true);
                     }
@@ -127,8 +135,8 @@ function Visualize() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
                 transition={{ duration: 0.7, ease: "linear" }}
+                exit={{ opacity: 0 }}
                 className="w-full h-full bg-white"
               >
                 {/* Single Input */}
@@ -165,7 +173,7 @@ function Visualize() {
                           <div className="h-1/2 w-full flex justify-center items-center">
                             <input
                               type="number"
-                              min="1"
+                              min="0"
                               ref={(el) => (focusRefSeq.current[ind + 1] = el)}
                               onClick={() => setindex(ind + 1)}
                               onChange={(e) => {
@@ -195,6 +203,9 @@ function Visualize() {
                         if (frameSize === "") {
                           message.current = "Please enter frame size";
                           setshowAlert(true);
+                        } else if (frameSize > 30) {
+                          message.current = "Maximum frame size allowed is 30";
+                          setshowAlert(() => true);
                         } else {
                           for (let j = 1; j <= pageNo; j++) {
                             if (!focusRefSeq.current[j].value) {
@@ -237,16 +248,18 @@ function Visualize() {
 
                       {/* Generating answer button */}
                       <div className="h-1/2 w-full flex justify-center items-start">
-                        <button className="w-max font-medium px-5 py-2 bg-emerald-400 rounded-lg text-[1.4vw] duration-300 ease-linear text-black hover:bg-emerald-300" onClick={()=>{
-                          if(chooseAlgo===0){
-                            message.current="Choose some algorithm"
-                            setshowAlert(()=>true)
-                          }
-                          else{
-                            seqValues.current[0]=frameSize.toString()
-                            console.log(Object.values(seqValues))
-                          }
-                        }}>
+                        <button
+                          className="w-max font-medium px-5 py-2 bg-emerald-400 rounded-lg text-[1.4vw] duration-300 ease-linear text-black hover:bg-emerald-300"
+                          onClick={() => {
+                            if (chooseAlgo === 0) {
+                              message.current = "Choose some algorithm";
+                              setshowAlert(() => true);
+                            } else {
+                              setshowAnswer(() => false);
+                              setshowAnswer(() => true);
+                            }
+                          }}
+                        >
                           Generate Answer
                         </button>
                       </div>
@@ -255,14 +268,35 @@ function Visualize() {
                 </div>
               </motion.div>
             )}
-          </AnimatePresence>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Generating Answer */}
-      <div className="h-[80vh] w-[90%] bg-red-600 rounded-xl mb-10 flex justify-center items-center">
-
-      </div>
+      {showAnswer && (
+        <div className="h-max w-[90%] rounded-xl flex flex-col items-center gap-10 overflow-hidden bg-gray-200/90">
+          <div className="h-[10vh] w-full text-[1.8vw] font-medium flex justify-center items-center bg-gradient-to-r from-slate-300 to-slate-500">
+            {chooseAlgo === 1 ? "First In First Out (FIFO)" : ""}
+            {chooseAlgo === 2 ? "Optimal Page Replacement" : ""}
+            {chooseAlgo === 3 ? "Least Recently Used (LRU)" : ""}
+          </div>
+          {chooseAlgo === 1 ? (
+            <FIFOsolver data={seqValues.current} frameSize={frameSize} />
+          ) : (
+            ""
+          )}
+          {chooseAlgo === 2 ? (
+            <OptimalPage data={seqValues.current} frameSize={frameSize} />
+          ) : (
+            ""
+          )}
+          {chooseAlgo === 3 ? (
+            <LRUPage data={seqValues.current} frameSize={frameSize} />
+          ) : (
+            ""
+          )}
+        </div>
+      )}
     </div>
   );
 }

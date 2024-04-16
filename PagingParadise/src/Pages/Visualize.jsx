@@ -278,7 +278,7 @@ function Visualize() {
             {chooseAlgo === 2 ? "Optimal Page Replacement" : ""}
             {chooseAlgo === 3 ? "Least Recently Used (LRU)" : ""}
           </div>
-          <AnswerPage data={seqValues.current} frameSize={frameSize}/>
+          <AnswerPage data={seqValues.current} frameSize={frameSize} chooseAlgo={chooseAlgo}/>
         </div>
       )}
     </div>

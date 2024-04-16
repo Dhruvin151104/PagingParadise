@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ChooseAlgorithm from "../components/ChooseAlgorithm";
 import AnswerPage from "../components/AnswerPage";
 
-function Visualize() {
+function Visualize(props) {
   const [showAlert, setshowAlert] = useState(false);
   const [showPageSeq, setshowPageSeq] = useState(false);
   const [showFinalSequence, setshowFinalSequence] = useState(false);
@@ -15,7 +15,6 @@ function Visualize() {
   const message = useRef(null);
   const seqValues = useRef({});
   const focusRefSeq = useRef({});
-  const [chooseAlgo, setchooseAlgo] = useState(0);
 
   const validInput = (e) => {
     if (e.target.value === "") return e.target.value;
@@ -41,10 +40,10 @@ function Visualize() {
 
   useEffect(() => {
     setshowAnswer(() => false);
-  }, [chooseAlgo, showPageSeq, showFinalSequence]);
+  }, [props.chooseAlgo, showPageSeq, showFinalSequence]);
 
   return (
-    <div className="min-h-[130vh] w-full  mt-16 flex flex-col items-center gap-20">
+    <div className="h-max w-full  mt-16 flex flex-col items-center gap-20">
       <Alert
         show={showAlert}
         setshow={setshowAlert}
@@ -52,13 +51,8 @@ function Visualize() {
         message={message.current}
       />
 
-      {/* Choosing Algorithm */}
-      <div className="w-[90%] h-[60vh]">
-        <ChooseAlgorithm index={chooseAlgo} setindex={setchooseAlgo} />
-      </div>
-
       {/* Selection Part */}
-      <div className="w-[90%] h-[60vh] max-h-max shadow-inner rounded-xl overflow-hidden flex flex-col items-center">
+      <div className="w-[90%] h-[55vh] max-h-max shadow-inner rounded-xl overflow-hidden flex flex-col items-center">
         {/* Taking Size of Parameters */}
         <div className="w-full h-[20%] bg-gradient-to-r from-slate-300 to-slate-500 flex text-[1.5vw] justify-evenly">
           <div className="h-full  flex justify-center items-center gap-5">
@@ -138,7 +132,7 @@ function Visualize() {
                 className="w-full h-full bg-white"
               >
                 {/* Single Input */}
-                <div className="w-full h-[65%] flex items-center px-5">
+                <div className="w-full h-[60%] flex items-center px-5">
                   <div
                     className={`h-[60%] w-full flex overflow-auto items-center ${
                       pageNo >= 9 ? "justify-start" : " justify-center"
@@ -194,7 +188,7 @@ function Visualize() {
                 </div>
 
                 {/* Submit Input */}
-                <div className="w-full h-[35%] flex justify-center items-start">
+                <div className="w-full h-[40%] flex justify-center items-start">
                   {!showFinalSequence && (
                     <button
                       onClick={() => {
@@ -215,14 +209,14 @@ function Visualize() {
                           setshowFinalSequence(true);
                         }
                       }}
-                      className="w-max font-medium  px-7 py-3 bg-emerald-400 rounded-lg text-[1.5vw] duration-300 ease-linear text-black hover:bg-emerald-300"
+                      className="w-max font-medium pt-10 px-5 py-2 bg-emerald-400 rounded-lg text-[1.4vw] duration-300 ease-linear text-black hover:bg-emerald-300"
                     >
                       Confirm Sequence
                     </button>
                   )}
 
                   {showFinalSequence && (
-                    <div className="w-full h-full flex justify-evenly items-center text-[1.6vw] px-5 flex-col border-t-red-300 border-t-[3px]">
+                    <div className="w-full h-full  flex justify-evenly items-center text-[1.6vw] px-5 flex-col border-t-red-300 border-t-[3px]">
                       <div className="h-1/2 w-full  flex justify-center gap-5 font-medium">
                         <div className="h-full w-1/2 flex justify-center items-center">
                           Frame Size : {frameSize}
@@ -249,11 +243,10 @@ function Visualize() {
                         <button
                           className="w-max font-medium px-5 py-2 bg-emerald-400 rounded-lg text-[1.4vw] duration-300 ease-linear text-black hover:bg-emerald-300"
                           onClick={() => {
-                            if (chooseAlgo === 0) {
+                            if (props.chooseAlgo === 0) {
                               message.current = "Choose some algorithm";
                               setshowAlert(() => true);
                             } else {
-                              setshowAnswer(() => false);
                               setshowAnswer(() => true);
                             }
                           }}
@@ -274,11 +267,11 @@ function Visualize() {
       {showAnswer && (
         <div className="h-max w-[90%] rounded-xl flex flex-col items-center gap-10 overflow-hidden bg-gray-200/90">
           <div className="h-[10vh] w-full text-[1.8vw] font-medium flex justify-center items-center bg-gradient-to-r from-slate-300 to-slate-500">
-            {chooseAlgo === 1 ? "First In First Out (FIFO)" : ""}
-            {chooseAlgo === 2 ? "Optimal Page Replacement" : ""}
-            {chooseAlgo === 3 ? "Least Recently Used (LRU)" : ""}
+            {props.chooseAlgo === 1 ? "First In First Out (FIFO)" : ""}
+            {props.chooseAlgo === 2 ? "Optimal Page Replacement" : ""}
+            {props.chooseAlgo === 3 ? "Least Recently Used (LRU)" : ""}
           </div>
-          <AnswerPage data={seqValues.current} frameSize={frameSize} chooseAlgo={chooseAlgo}/>
+          <AnswerPage data={seqValues.current} frameSize={frameSize} chooseAlgo={props.chooseAlgo}/>
         </div>
       )}
     </div>

@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./Pages/Home";
-import Learn from "./Pages/Learn";
-import Visualize from "./Pages/Visualize";
+import PageReplacement from "./Pages/PageReplacement";
+import ReaderWriter from "./Pages/ReaderWriter";
+
 
 function App() {
   return (
@@ -10,8 +11,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />}/>
-        <Route path="/learn" element={<Learn />}/>
-        <Route path="/visualize" element={<Visualize />}/>
+        <Route path="/pagereplacementalgorithm" element={<PageReplacement />}/>
+        <Route path="/readerwriter" element={<ReaderWriter />}/>
       </Routes>
     </div>
   )

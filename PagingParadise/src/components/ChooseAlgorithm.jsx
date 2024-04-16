@@ -8,8 +8,8 @@ function ChooseAlgorithm(props) {
     return (
       <div
         className={`w-[30%] h-full bg-white shadow-inner rounded-lg overflow-hidden cursor-pointer duration-150 ease-linear   ${
-          props.index === ind
-            ? "bg-green-200/60 outline-emerald-300 outline"
+          props.index == ind
+            ? "bg-green-200/70 outline-emerald-300 outline"
             : "hover:outline-red-300 hover:outline"
         }`}
         onClick={() => props.setindex(ind)}

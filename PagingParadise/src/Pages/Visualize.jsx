@@ -227,7 +227,7 @@ function Visualize(props) {
                             {Object.values(focusRefSeq.current).map(
                               (element, ind) => {
                                 return (
-                                  <p className="h-full">
+                                  <p key={ind} className="h-full">
                                     {element.value +
                                       (ind + 1 !== pageNo ? ", " : ".")}
                                   </p>

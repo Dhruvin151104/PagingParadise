@@ -9,7 +9,7 @@ import reader_writer from "../assets/reader_writer.png"
 function Footer() {
   return (
     <div className="w-full h-[50vh] bg-gradient-to-r from-slate-300 to-slate-400 mt-20 flex px-20">
-      <div className="h-full w-[30%] flex flex-col justify-center items-center gap-3">
+      <div className="h-full w-[50%] flex flex-col justify-center items-center gap-3">
         <div className="w-full h-24">
           <Link to="/" className="h-[10%] w-[50%]">
             <Logo />

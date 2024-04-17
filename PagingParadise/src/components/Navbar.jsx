@@ -16,7 +16,7 @@ function Navbar() {
     );
   };
   return (
-    <div className=" h-24 w-full flex">
+    <div className=" h-24 w-full flex px-20">
       <Link to="/" className="h-full w-[50%]">
         <Logo />
       </Link>

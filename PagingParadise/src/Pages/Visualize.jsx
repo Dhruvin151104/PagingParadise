@@ -209,7 +209,7 @@ function Visualize(props) {
                           setshowFinalSequence(true);
                         }
                       }}
-                      className="w-max font-medium pt-10 px-5 py-2 bg-emerald-400 rounded-lg text-[1.4vw] duration-300 ease-linear text-black hover:bg-emerald-300"
+                      className="w-max font-medium mt-10 px-5 py-2 bg-emerald-400 rounded-lg text-[1.4vw] duration-300 ease-linear text-black hover:bg-emerald-300"
                     >
                       Confirm Sequence
                     </button>

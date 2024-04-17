@@ -18,6 +18,10 @@ function ReaderWriter() {
   const [userWriterInDb, setuserWriterInDb] = useState("");
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     addReaders();
     addWriter();
   }, [userReader, userWriter, userWriterInDb, userReaderInDb]);
@@ -118,7 +122,12 @@ function ReaderWriter() {
   };
 
   return (
-    <div className="w-full min-h-[75vh] mt-16 flex justify-evenly">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="w-full min-h-[75vh] mt-16 flex justify-evenly px-20"
+    >
       <Alert
         show={showAlert}
         setshow={setshowAlert}
@@ -178,7 +187,7 @@ function ReaderWriter() {
                   return process({
                     name: element,
                     key: `reader_${index}`,
-                    index:index,
+                    index: index,
                     isReader: true,
                   });
                 })}
@@ -186,7 +195,7 @@ function ReaderWriter() {
                   return process({
                     name: element,
                     key: `writer_${index}`,
-                    index:index,
+                    index: index,
                     isReader: false,
                   });
                 })}
@@ -254,12 +263,17 @@ function ReaderWriter() {
               )}
             </div>
             <div className="w-full h-[15%] text-[1.3vw] flex justify-center items-center font-medium border-t-red-400 border-t-[3px]">
-              Writer Lock : {(readerCount.current==0 && allowReaderWriter.current)?<span className="text-emerald-500"> False</span>:<span className="text-red-500"> True</span>}
+              Writer Lock :{" "}
+              {readerCount.current == 0 && allowReaderWriter.current ? (
+                <span className="text-emerald-500"> False</span>
+              ) : (
+                <span className="text-red-500"> True</span>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

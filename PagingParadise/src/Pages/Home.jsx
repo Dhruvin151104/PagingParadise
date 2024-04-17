@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import home from "../assets/home.png";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Home() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
-    <div className="h-[80vh] w-full flex mt-5">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="h-[80vh] w-full flex mt-5 px-20"
+    >
       <div className="w-1/2 h-full  flex flex-col justify-center gap-7 pr-20">
         <p className="text-3xl font-medium">
           <span className="text-emerald-500">Page</span> Replacement Algorithm
@@ -29,14 +39,17 @@ function Home() {
           </p>
         </div>
 
-        <Link to="/learn" className="w-max px-5 py-2 bg-emerald-500 rounded-lg text-lg mt-3 hover:bg-emerald-300 duration-300 ease-linear">
+        <Link
+          to="/pagereplacementalgorithm"
+          className="w-max px-5 py-2 bg-emerald-500 rounded-lg text-lg mt-3 hover:bg-emerald-300 duration-300 ease-linear"
+        >
           Learn More...
         </Link>
       </div>
       <div className="w-1/2 h-full  flex justify-center items-center">
         <img src={home} alt="" className="h-full" />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

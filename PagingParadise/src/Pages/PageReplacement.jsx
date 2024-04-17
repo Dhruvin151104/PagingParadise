@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import ChooseAlgorithm from "../components/ChooseAlgorithm";
 import Visualize from "./Visualize";
 import { motion, AnimatePresence } from "framer-motion";
 
 function PageReplacement() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [])
+
   const [chooseAlgo, setchooseAlgo] = useState(0);
 
   const line = (text) => {
@@ -16,7 +20,7 @@ function PageReplacement() {
   };
 
   return (
-    <div className="w-full min-h-[100vh] mt-16 flex flex-col gap-10">
+    <div className="w-full min-h-[100vh] mt-16 flex flex-col gap-10 px-20">
       <div className="w-full text-4xl flex justify-center font-light">
         Different Page Replacement Algorithms
       </div>
@@ -26,7 +30,7 @@ function PageReplacement() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="w-full mt-16 flex flex-col items-center gap-20 mb-10 duration-1000 ease-linear"
+          className="w-full mt-16 flex flex-col items-center gap-20 duration-1000 ease-linear"
         >
           {/* Choosing Algorithm */}
           <div className="h-[50vh] w-[90%]">
